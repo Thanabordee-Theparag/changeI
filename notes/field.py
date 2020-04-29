@@ -1,4 +1,6 @@
 from django.db import models
+
+
 class RatingField(models.Field):
     "Implements rating system"
 

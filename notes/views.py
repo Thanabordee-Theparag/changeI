@@ -6,15 +6,23 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
 from .models import Note, Image, Tag, Review
 from django.template.loader import get_template
+
 # Create your views here.
+
+
 def ClearStrSpace(input):
     return " ".join(input.split())
+
 
 def home_page(request):
     notes = Note.objects.order_by('-upload_time')
     return render(request,'home_page.html',{'notes':notes})
+
+
 def upload_page(request):
     return render(request,'upload_page.html')
+
+
 def upload_api(request):
     filetype_list = ["img", "png", "jpg" ,"jpeg", "tiff", "gif", "bmp"]
     if request.POST:
@@ -41,6 +49,7 @@ def upload_api(request):
         return HttpResponseRedirect('/')
     return HttpResponseRedirect('/')
 
+
 def detial(request,note_index):
     n = get_object_or_404(Note, pk=note_index)
     images = Image.objects.filter(note=n)
@@ -50,8 +59,10 @@ def detial(request,note_index):
 def about(request):
     return render(request, 'about.html')
 
+
 def help(request):
     return render(request, 'help_main.html')
+
 
 def help_detail(request, help_topic):
     try:
@@ -59,6 +70,7 @@ def help_detail(request, help_topic):
         return render(request, "help/%s.html"%(help_topic) ) 
     except:
         return HttpResponseNotFound("<h1>404 Page not found</h1>")
+
 
 def search(request):
     query_word = request.GET.get("q",'')
@@ -75,6 +87,7 @@ def search(request):
 def tagQuery(request, tag_title):
     query_tag = get_object_or_404(Tag , title=tag_title)
     return render(request, 'tag_result.html',{'tag':query_tag})
+
 
 def addcomment_api(request):
     note_id = request.POST['note_id']

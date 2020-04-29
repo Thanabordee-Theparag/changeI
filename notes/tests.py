@@ -47,19 +47,21 @@ class NoteModelTest(LiveServerTestCase):
         images = Image.objects.filter(note=n)
         self.assertEqual(images.count(), 2)
         
+
     def test_database_note_id_increte_automatically_without_declaration(self):
         note1 = Note()
         note1.save()
         note2 = Note()
-        note2.save()
-        
+        note2.save()   
         self.assertEqual(note2.id - note1.id, 1)
     
+
     def test_database_automatically_add_upload_time(self):
         note1 = Note()
         note1.save()
         time.sleep(1)
         self.assertLess(note1.upload_time, datetime.datetime.now())
+
 
     def test_database_can_search_by_similar(self):
         from django.db.models import Q
@@ -105,6 +107,7 @@ class NoteModelTest(LiveServerTestCase):
 
         search_result = Note.objects.filter(name__trigram_similar="django").filter(desc__trigram_similar="django")
     
+
     def test_can_get_review_mean_score(self):
         n = Note()
         n.save()
@@ -120,6 +123,7 @@ class NoteModelTest(LiveServerTestCase):
         review2.save()
 
         self.assertEqual(round(n.mean_score, ndigits=2), 4.5)
+
 
     def test_can_store_and_get_review(self):
         n = Note()

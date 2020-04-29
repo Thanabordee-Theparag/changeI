@@ -8,6 +8,7 @@ from selenium.common.exceptions import WebDriverException
 from notes.models import Note,Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 
+
 class NewVisitorTest(LiveServerTestCase):
     publishTime = ""
     def setUp(self):
@@ -52,8 +53,10 @@ class NewVisitorTest(LiveServerTestCase):
         # self.browser = webdriver.Edge()
         self.browser = webdriver.Firefox()
 
+
     def tearDown(self):
         self.browser.quit()
+
 
     def wait_for_page_update(self):
         time.sleep(1)
@@ -67,6 +70,7 @@ class NewVisitorTest(LiveServerTestCase):
                 if time.time() - start_time > MAX_WAIT:  
                     raise e  
                 time.sleep(0.5) 
+
 
     def test_user_can_checkout_homepage(self):
         # Tina is a Highschool student and tries to find another way to study for her exam. 
@@ -112,7 +116,6 @@ class NewVisitorTest(LiveServerTestCase):
         #self.assertIn( 'Published %s'%(publishTime), [link.text for link in note.find_elements_by_tag_name('span')])
         self.assertIn('By Susan', [link.text for link in self.browser.find_elements_by_tag_name('span')])   
         
-        
         # She found left-right arrow buttons, note image between that and dots in the bottom.
         left_arrow  = self.browser.find_element_by_class_name('prev')
         self.assertTrue(left_arrow)
@@ -149,7 +152,6 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser.get(self.live_server_url)
         self.wait_for_page_update()
         # She notices the welcome note that invite her to upload her lecture note.
-
         
         # She found the upload button.
         upload_btn = self.browser.find_element_by_id("upload_btn")
@@ -201,8 +203,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('By Tina', [link.text for link in self.browser.find_elements_by_class_name('owner')])
         
         # and click on the arrow button to check that the order is correct.
-        
-        
+               
         flag15 = False
         flag16 = False
         flag17 = False
@@ -215,7 +216,6 @@ class NewVisitorTest(LiveServerTestCase):
             if 'IMG_0817' in src:
                 flag17 = True
 
-   
         self.assertTrue(flag15)
         self.assertTrue(flag16)
         self.assertTrue(flag17)

@@ -3,13 +3,13 @@ from django.db.models import Q
 from sorl.thumbnail import ImageField, get_thumbnail
 import sorl.thumbnail
 import datetime
-
 from notes.field import RatingField
 
 # Create your models here.
 class Tag(models.Model):
     title = models.CharField(max_length=250)
     slug = models.SlugField(blank=True, null=True)
+
 
     class Meta:
         verbose_name = "tag"
@@ -19,6 +19,7 @@ class Tag(models.Model):
     
     def get_absolute_url(self):
      return "/tags/%s/" % self.slug
+
     def __str__(self):
         return self.title
 
@@ -32,8 +33,11 @@ class Note(models.Model):
     tags =  models.ManyToManyField(Tag,related_name='notes')
     mean_score = models.FloatField(default=0)
     review_count = models.IntegerField(default=0)
+
+
     def __str__(self):
         return self.name
+
     def get_thumb(self):
         try:
             i = Image.objects.filter(note=self)[0].get_thumb()
@@ -46,13 +50,17 @@ class Note(models.Model):
 def note_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<>/<filename>
     return '{0}/{1}'.format(instance.note.id, filename)
+
+
 class Image(models.Model):
     index = models.IntegerField()
     note = models.ForeignKey(Note, on_delete=models.CASCADE, related_name="images")
     image = ImageField(upload_to=note_directory_path)
+
     def get_thumb(self):
         im = get_thumbnail(self.image, '500x500', crop='center', quality=99)
         return im.url # remember that sorl objects have url/width/height attributes
+
 
 class Review(models.Model):
     note = models.ForeignKey(Note, on_delete=models.CASCADE, related_name="reviews")
